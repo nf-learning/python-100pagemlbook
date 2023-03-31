@@ -49,7 +49,7 @@ def predict(x, w, b):
     return w * x + b
 
 
-x = get_column_data('Advertising.csv', 'TV')
+x = get_column_data('Advertising.csv', 'radio')
 y = get_column_data('Advertising.csv', 'sales')
 w, b = train(x, y, 0.0, 0.0, 0.001, 15000)
 x_new = 23.0
