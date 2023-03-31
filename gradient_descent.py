@@ -1,4 +1,5 @@
 import csv
+import numpy as np
 
 
 def get_column_data(filename, column_name):
@@ -28,13 +29,13 @@ def update_w_and_b(spendings, sales, w, b, alpha):
     return w, b
 
 
-def train(spendings, sales, w, b, alpha, epochs):
-    for e in range(epochs):
-        w, b = update_w_and_b(spendings, sales, w, b, alpha)
-
-        if e % 400 == 0:
-            print("epoch:", e, "loss:", avg_loss(spendings, sales, w, b))
-    return w, b
+# def train(spendings, sales, w, b, alpha, epochs):
+#     for e in range(epochs):
+#         w, b = update_w_and_b(spendings, sales, w, b, alpha)
+#
+#         if e % 400 == 0:
+#             print("epoch:", e, "loss:", avg_loss(spendings, sales, w, b))
+#     return w, b
 
 
 def avg_loss(spendings, sales, w, b):
@@ -48,10 +49,17 @@ def avg_loss(spendings, sales, w, b):
 def predict(x, w, b):
     return w * x + b
 
+def train(x,y):
+    from sklearn.linear_model import LinearRegression
+    model = LinearRegression().fit(x,y)
+    return model
 
-x = get_column_data('Advertising.csv', 'radio')
+
+x = np.array(get_column_data('Advertising.csv', 'radio'))
+x = x.reshape(-1,1)
 y = get_column_data('Advertising.csv', 'sales')
-w, b = train(x, y, 0.0, 0.0, 0.001, 15000)
-x_new = 23.0
-y_new = predict(x_new, w, b)
+# w, b = train(x, y, 0.0, 0.0, 0.001, 15000)
+model = train(x,y)
+x_new = np.array(23.0).reshape(1,-1)
+y_new = model.predict(x_new)
 print(y_new)
